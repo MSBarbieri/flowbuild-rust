@@ -1,0 +1,16 @@
+{
+  "name": "@flowbuild/engine-darwin-arm64",
+  "os": [
+    "darwin"
+  ],
+  "cpu": [
+    "arm64"
+  ],
+  "main": "engine.darwin-arm64.node",
+  "files": [
+    "engine.darwin-arm64.node"
+  ],
+  "engines": {
+    "node": ">= 10"
+  }
+}

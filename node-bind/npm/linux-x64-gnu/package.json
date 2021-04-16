@@ -1,0 +1,16 @@
+{
+  "name": "@flowbuild/engine-linux-x64-gnu",
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "main": "engine.linux-x64-gnu.node",
+  "files": [
+    "engine.linux-x64-gnu.node"
+  ],
+  "engines": {
+    "node": ">= 10"
+  }
+}

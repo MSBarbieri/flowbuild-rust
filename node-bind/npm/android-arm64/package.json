@@ -1,0 +1,16 @@
+{
+  "name": "@flowbuild/engine-android-arm64",
+  "os": [
+    "android"
+  ],
+  "cpu": [
+    "arm64"
+  ],
+  "main": "engine.android-arm64.node",
+  "files": [
+    "engine.android-arm64.node"
+  ],
+  "engines": {
+    "node": ">= 10"
+  }
+}

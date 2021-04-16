@@ -1,0 +1,16 @@
+{
+  "name": "@flowbuild/engine-linux-x64-musl",
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "main": "engine.linux-x64-musl.node",
+  "files": [
+    "engine.linux-x64-musl.node"
+  ],
+  "engines": {
+    "node": ">= 10"
+  }
+}

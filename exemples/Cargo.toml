@@ -1,0 +1,17 @@
+[package]
+name = "examples"
+version = "0.0.0"
+publish = false
+edition = "2018"
+
+[dev-dependencies]
+engine = { path = "../engine", features = [], version= "0.0.0" }
+
+[[example]]
+name = "hello"
+path = "hello.rs"
+
+
+[[example]]
+name = "spread_self"
+path = "spread_self.rs"

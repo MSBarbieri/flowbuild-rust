@@ -1,0 +1,16 @@
+{
+  "name": "@flowbuild/engine-linux-arm-gnueabihf",
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "arm"
+  ],
+  "main": "engine.linux-arm-gnueabihf.node",
+  "files": [
+    "engine.linux-arm-gnueabihf.node"
+  ],
+  "engines": {
+    "node": ">= 10"
+  }
+}
