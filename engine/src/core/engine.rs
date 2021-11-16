@@ -1,45 +1,43 @@
 use super::persistors::{PersistMode, PersistorProvider};
 use super::threadpool::{EnginePoolnfo, EngineThreadPool};
-use std::collections::hash_map::HashMap;
-use std::fmt::Debug;
+use super::workflow::{HelloNode, Node};
+use core::pin::Pin;
+use serde_json::Value;
+use std::collections::HashMap;
 use uuid::Uuid;
 
-use crate::nodes::{HelloNode, Node};
-
-#[derive(Debug)]
-pub struct Engine {
+pub struct Engine<'a> {
     pub engine_id: Uuid,
-    pub nodes_map: HashMap<String, Box<dyn Node>>,
     pub threadpool: EngineThreadPool,
+    node_hash_map: HashMap<&'a str, &'a dyn Node>,
 }
 
-impl Engine {
-    pub fn new(persist_mode: PersistMode, thread_pool_info: Option<EnginePoolnfo>) -> Engine {
-        let mut _nodes_map: HashMap<String, Box<dyn Node>> = HashMap::new();
-        _nodes_map.insert("hello_node".to_string(), Box::new(HelloNode::new()));
-        PersistorProvider::new(Some(persist_mode));
+impl<'a> Engine<'a> {
+    pub fn new(persist_mode: PersistMode, thread_pool_info: Option<EnginePoolnfo>) -> Self {
+        let node_hash_map:HashMap<&'a str, &'a dyn Node> = HashMap::new();
+        node_hash_map.insert("HelloWorld", &HelloNode);
         Engine {
             engine_id: Uuid::new_v4(),
-            nodes_map: _nodes_map,
             threadpool: EngineThreadPool::new(thread_pool_info),
+            node_hash_map,
         }
     }
-    pub fn insert_node(&mut self, name: String, node: Box<dyn Node>) -> &Self {
-        self.nodes_map.insert(name, node).unwrap();
-        self
-    }
-    pub fn create_process(&mut self) -> Uuid {
-        let uuid = Uuid::new_v4();
-        println!("engine id in create_process {:?}", self.engine_id);
-        println!("{:?}", uuid);
-        let mut node = self.nodes_map.get_mut("hello_node").unwrap().clone();
 
-        let real_node = match node.as_mut_any().downcast_mut::<HelloNode>() {
-            Some(_node) => _node,
-            None => panic!("fuck"),
-        };
-        real_node.pre_processing();
-        real_node.run();
-        uuid
+    fn set_node(&mut self, node_name: &'a str, node_type: &'a impl Node) -> anyhow::Result<()> {
+        self.node_hash_map.insert(node_name, node_type);
+        Ok(())
+    }
+
+    pub async fn create_process(&mut self) -> anyhow::Result<()> {
+        let uuid = Uuid::new_v4();
+        let node = self.node_hash_map.get("HelloWorld").unwrap();
+        let result = node
+            .run(node.prepare_input(&mut Value::Null, &Value::Null, &Value::Null, &Value::Null))
+            .await?;
+
+        println!("{:?}", result);
+        Ok(())
     }
 }
+
+// let mut node = self.get_node(String::from("HelloNode"));
