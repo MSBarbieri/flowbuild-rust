@@ -11,7 +11,3 @@ engine = { path = "../engine", features = [], version= "0.0.0" }
 name = "hello"
 path = "hello.rs"
 
-
-[[example]]
-name = "spread_self"
-path = "spread_self.rs"
