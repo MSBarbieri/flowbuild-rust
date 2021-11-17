@@ -1,3 +1,5 @@
+use super::ActivityManager;
+use core::cell::RefCell;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
@@ -19,28 +21,29 @@ pub enum ProcessStatus {
 }
 
 /// this state is a representation of any type of `Node` result, this state gonna be serialized and persisted
-#[derive(Serialize, Deserialize, Debug, PartialEq)]
+#[derive(Clone, Serialize, Deserialize, Debug, PartialEq)]
 pub struct ProcessState {
     pub id: Uuid,
-    created_at: DateTime<Utc>,
+    pub created_at: DateTime<Utc>,
     /// Node processing time duration
-    time_elapsed: Duration,
+    pub time_elapsed: Duration,
     /// id ref of process
-    process_id: Uuid,
+    pub process_id: Uuid,
     /// id ref of engine
-    engine_id: Uuid,
+    pub engine_id: Uuid,
     /// count of how many states this process have
-    step_number: u32,
+    pub step_number: u32,
     /// data for process history
-    bag: Value,
+    pub bag: Value,
     /// `Node` result data, this data gonna be sended to next workflow node. Value is serde parsed data
-    result: Value,
+    pub result: Value,
     ///
-    external_input: Value,
+    pub external_input: Value,
     ///
-    actor_data: Value,
+    pub actor_data: Value,
     /// result Type of Node processing
-    status: ProcessStatus,
+    pub status: ProcessStatus,
+    pub activity_manager: Option<RefCell<ActivityManager>>
 }
 
 pub enum DataHistory {
@@ -65,6 +68,7 @@ impl ProcessState {
             engine_id: Uuid::default(),
             process_id: Uuid::default(),
             step_number: 0,
+            activity_manager: None
         }
     }
 
