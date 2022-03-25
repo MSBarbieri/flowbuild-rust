@@ -21,7 +21,6 @@ impl WorkflowProvider {
             )",
         )
         .load::<QueryableWorkflow>(&conn)?;
-        println!("{:?}", w);
         let w = w
             .iter()
             .map(|w| w.into())

@@ -4,8 +4,8 @@ use serde_json::Value;
 use std::{
     collections::hash_map::DefaultHasher,
     hash::{Hash, Hasher},
-    time::SystemTime,
 };
+use chrono::{NaiveDateTime,Utc, TimeZone};
 use uuid::Uuid;
 use crate::core::runtime::Workflow as RuntimeWorkflow;
 
@@ -17,7 +17,7 @@ pub struct Workflow {
     pub blueprint_spec: Value,
     pub blueprint_hash: String,
     pub version: i32,
-    pub created_at: SystemTime,
+    pub created_at: NaiveDateTime,
 }
 
 impl Into<Workflow> for RuntimeWorkflow {
@@ -33,7 +33,7 @@ impl Into<Workflow> for RuntimeWorkflow {
             blueprint_spec: spec,
             blueprint_hash: hasher.finish().to_string(),
             version: self.version as i32,
-            created_at: self.created_at.into(),
+            created_at: self.created_at.naive_utc(),
         }
     }
 }
@@ -42,7 +42,7 @@ impl Into<RuntimeWorkflow> for Workflow {
     fn into(self) -> RuntimeWorkflow {
         crate::core::Workflow {
             id: self.id,
-            created_at: self.created_at.into(),
+            created_at: Utc.from_local_datetime(&self.created_at).unwrap(),
             name: self.name,
             description: self.description,
             blueprint_spec: serde_json::from_value(self.blueprint_spec)
@@ -62,7 +62,7 @@ pub(crate) struct QueryableWorkflow {
     pub blueprint_spec: Value,
     pub blueprint_hash: String,
     pub version: i32,
-    pub created_at: SystemTime,
+    pub created_at: NaiveDateTime,
 }
 
 impl Into<RuntimeWorkflow> for &QueryableWorkflow {
@@ -78,7 +78,7 @@ impl Into<RuntimeWorkflow> for &QueryableWorkflow {
             description: self.description.clone(),
             blueprint_spec: serde_json::from_value(spec).expect("failed to map blueprint_spec"),
             version: self.version as u32,
-            created_at: self.created_at.into(),
+            created_at: Utc.from_local_datetime(&self.created_at).unwrap(),
             published: true
         }
     }
