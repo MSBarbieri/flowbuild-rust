@@ -2,12 +2,23 @@
 name = "examples"
 version = "0.0.0"
 publish = false
-edition = "2018"
+edition = "2021"
 
 [dev-dependencies]
 engine = { path = "../engine", features = [], version= "0.0.0" }
+tokio = { version = "1.1.1", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
 
 [[example]]
 name = "hello"
 path = "hello.rs"
 
+
+[[example]]
+name = "process"
+path = "process.rs"
+
+[[example]]
+name = "serialize"
+path = "serialize.rs"

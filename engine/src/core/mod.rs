@@ -1,9 +1,9 @@
-pub mod workflow;
+pub mod runtime;
 pub mod engine;
 pub mod persistors;
 
 pub use {
-    super::workflow::*,
+    super::runtime::*,
     super::engine::*,
     super::persistors::*,
 };

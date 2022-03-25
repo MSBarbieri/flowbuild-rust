@@ -1,5 +1,5 @@
 pub mod activity_manager;
-pub mod blueprint_spec;
+pub mod blueprint;
 pub mod nodes;
 pub mod operators;
 pub mod process;

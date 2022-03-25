@@ -2,7 +2,7 @@
 name = "engine"
 
 version = "0.0.0"
-edition = "2018"
+edition = "2021"
 authors = ["FDTE-DSD"]
 license = "MIT"
 readme = "README.md"
@@ -27,5 +27,18 @@ anyhow = "1.0"
 chrono = { version = "0.4", features = ["serde"] }
 async-trait = "0.1.51"
 js-sandbox = "0.1"
-rust_lisp = "0.2"
+rust_lisp = "0.6"
 mustache = "0.9"
+diesel = { version = "1.4.8", features = ["chrono","serde_json","uuidv07","postgres","sqlite","r2d2"] }
+lazy_static = "1.4.0"
+log = "0.4"
+pretty_env_logger = "0.4"
+
+
+[features]
+default = ["postgres", "cockpit","mqtt"]
+postgres = []
+sqlite = []
+mqtt = []
+cockpit = []
+
